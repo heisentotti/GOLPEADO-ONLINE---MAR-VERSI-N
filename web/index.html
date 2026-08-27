@@ -124,6 +124,377 @@ small{color:var(--muted)}
   margin:10px 0 8px;
 }
 
+/* Distribución de mesa según cantidad de jugadores */
+.table-groups.groups-1{
+  grid-template-columns:1fr;
+  max-width:520px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.table-groups.groups-2{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  max-width:760px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.table-groups.groups-3{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  max-width:900px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.table-groups.groups-4{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+  max-width:900px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.table-groups.groups-3 .group-cards,
+.table-groups.groups-4 .group-cards{
+  justify-content:center;
+}
+
+.table-groups.groups-3 .lowered-group,
+.table-groups.groups-4 .lowered-group{
+  padding:8px 10px;
+}
+
+/* ================================
+   MESA DE POKER - GOLPEADO
+   ================================ */
+
+.poker-table{
+  position:relative;
+  width:100%;
+  min-height:650px;
+  margin:18px 0;
+  padding:22px;
+  box-sizing:border-box;
+}
+
+.table-felt{
+  position:relative;
+  width:100%;
+  min-height:610px;
+  border-radius:42px;
+  background:
+    radial-gradient(ellipse at center,
+      #145746 0%,
+      #0d4639 48%,
+      #08382f 100%);
+  border:14px solid #4a3020;
+  box-shadow:
+    inset 0 0 0 3px rgba(217,180,90,.32),
+    inset 0 0 45px rgba(0,0,0,.55),
+    0 14px 30px rgba(0,0,0,.45);
+  overflow:hidden;
+}
+
+/* Borde interior dorado */
+.table-felt::before{
+  content:"";
+  position:absolute;
+  inset:18px;
+  border:2px solid rgba(217,180,90,.45);
+  border-radius:30px;
+  pointer-events:none;
+}
+
+/* Sombra interior de la mesa */
+.table-felt::after{
+  content:"";
+  position:absolute;
+  inset:30px;
+  border-radius:25px;
+  box-shadow:inset 0 0 45px rgba(0,0,0,.28);
+  pointer-events:none;
+}
+
+/* ================================
+   ZONAS DE LOS 4 JUGADORES
+   ================================ */
+
+.table-player-zone{
+  position:absolute;
+  z-index:5;
+  width:190px;
+  min-height:92px;
+  padding:10px 14px;
+  box-sizing:border-box;
+  border-radius:16px;
+  background:rgba(5,24,19,.78);
+  border:2px solid rgba(217,180,90,.55);
+  box-shadow:
+    0 7px 18px rgba(0,0,0,.35),
+    inset 0 0 15px rgba(0,0,0,.22);
+  backdrop-filter:blur(3px);
+}
+
+.table-player-top{
+  top:28px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.table-player-bottom{
+  bottom:28px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.table-player-left{
+  left:28px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.table-player-right{
+  right:28px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+/* ================================
+   CENTRO DE LA MESA
+   ================================ */
+
+.table-center{
+  position:absolute;
+  z-index:10;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:28px;
+}
+
+/* Mazo y descarte */
+.table-pile{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-width:92px;
+}
+
+.pile-label{
+  margin-bottom:8px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.5px;
+  color:#f0cf76;
+  text-shadow:0 2px 5px rgba(0,0,0,.7);
+}
+
+/* ================================
+   MAZO
+   ================================ */
+
+.deck-visual{
+  position:relative;
+  width:70px;
+  height:96px;
+}
+
+.deck-card{
+  position:absolute;
+  width:62px;
+  height:88px;
+  left:4px;
+  top:4px;
+  border-radius:8px;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      #17231f 0px,
+      #17231f 3px,
+      #d51f2a 3px,
+      #d51f2a 6px
+    );
+  border:2px solid #f7f3e8;
+  box-shadow:0 5px 10px rgba(0,0,0,.45);
+}
+
+.deck-card:nth-child(1){
+  transform:rotate(-5deg);
+  left:0;
+}
+
+.deck-card:nth-child(2){
+  transform:rotate(3deg);
+  left:3px;
+}
+
+.deck-card.top-card{
+  transform:rotate(0deg);
+  left:4px;
+  top:2px;
+}
+
+/* ================================
+   DESCARTE
+   ================================ */
+
+.discard-slot{
+  width:70px;
+  height:96px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:2px dashed rgba(240,207,118,.5);
+  border-radius:9px;
+  background:rgba(0,0,0,.14);
+}
+
+/* La carta real del descarte */
+.discard-slot .card-image-wrap{
+  width:62px;
+  height:88px;
+}
+
+/* ================================
+   GRUPOS BAJADOS
+   ================================ */
+
+.table-groups{
+  position:absolute;
+  z-index:8;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:58%;
+  min-height:180px;
+  display:grid;
+  gap:12px;
+  pointer-events:none;
+}
+
+.table-groups .lowered-group{
+  pointer-events:auto;
+  background:rgba(4,25,20,.70);
+  border:1px solid rgba(217,180,90,.38);
+  border-radius:12px;
+  padding:7px;
+  box-shadow:0 6px 15px rgba(0,0,0,.25);
+}
+
+.table-groups .group-cards{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:3px;
+  flex-wrap:wrap;
+}
+
+.table-groups .group-cards .card-image-wrap{
+  width:58px;
+  height:82px;
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+
+@media(max-width:900px){
+
+  .poker-table{
+    min-height:570px;
+    padding:12px;
+  }
+
+  .table-felt{
+    min-height:540px;
+    border-width:10px;
+  }
+
+  .table-player-zone{
+    width:145px;
+    min-height:70px;
+  }
+
+  .table-player-left,
+  .table-player-right{
+    display:none;
+  }
+
+  .table-player-top{
+    top:20px;
+  }
+
+  .table-player-bottom{
+    bottom:20px;
+  }
+
+  .table-groups{
+    width:70%;
+  }
+}
+
+@media(max-width:600px){
+
+  .poker-table{
+    min-height:500px;
+  }
+
+  .table-felt{
+    min-height:475px;
+    border-radius:30px;
+  }
+
+  .table-player-zone{
+    width:125px;
+    min-height:58px;
+    padding:6px;
+  }
+
+  .table-center{
+    gap:10px;
+  }
+
+  .deck-visual,
+  .discard-slot{
+    width:55px;
+    height:78px;
+  }
+
+  .deck-card{
+    width:48px;
+    height:70px;
+  }
+
+  .discard-slot .card-image-wrap{
+    width:48px;
+    height:70px;
+  }
+}
+
+
+.lowered-group{
+  padding:8px 10px;
+}
+
+@media(max-width:760px){
+  .table-groups.groups-3,
+  .table-groups.groups-4{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+
+  .table-groups.groups-3 .lowered-group,
+  .table-groups.groups-4 .lowered-group{
+    padding:7px 8px;
+  }
+}
+
 .lowered-group{
   padding:10px 12px;
   border:1px solid rgba(217,180,90,.28);
@@ -309,6 +680,186 @@ small{color:var(--muted)}
     grid-template-columns:1fr;
   }
 }
+
+/* ============================================================
+   JUGADORES DINÁMICOS EN LA MESA
+   2 jugadores = arriba / abajo
+   3 jugadores = arriba / izquierda / abajo
+   4 jugadores = arriba / izquierda / derecha / abajo
+   ============================================================ */
+
+.table-players{
+  position:absolute;
+  inset:0;
+  z-index:20;
+  pointer-events:none;
+}
+
+.table-player-seat{
+  position:absolute;
+  width:190px;
+  min-height:76px;
+  padding:10px 14px;
+  box-sizing:border-box;
+  border-radius:16px;
+  background:rgba(5,24,19,.88);
+  border:2px solid rgba(217,180,90,.55);
+  box-shadow:
+    0 7px 18px rgba(0,0,0,.38),
+    inset 0 0 15px rgba(0,0,0,.22);
+  backdrop-filter:blur(3px);
+  text-align:center;
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    transform .2s ease;
+}
+
+.table-player-seat .seat-name{
+  color:#f7f3e8;
+  font-size:15px;
+  font-weight:900;
+  line-height:1.2;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.table-player-seat .seat-info{
+  color:#a8bbb4;
+  font-size:11px;
+  margin-top:5px;
+  white-space:nowrap;
+}
+
+.table-player-seat .seat-you{
+  display:inline-block;
+  margin-left:5px;
+  color:#f0cf76;
+  font-size:10px;
+  font-weight:900;
+}
+
+.table-player-seat .seat-turn{
+  display:inline-block;
+  margin-top:5px;
+  padding:3px 9px;
+  border-radius:999px;
+  background:#d51f2a;
+  color:#fff;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.6px;
+}
+
+.table-player-seat.active{
+  border-color:#d51f2a;
+  box-shadow:
+    0 0 20px rgba(213,31,42,.42),
+    inset 0 0 18px rgba(213,31,42,.10);
+}
+
+/* ARRIBA */
+
+.table-player-seat.seat-top{
+  top:28px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+/* ABAJO */
+
+.table-player-seat.seat-bottom{
+  bottom:28px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+/* IZQUIERDA */
+
+.table-player-seat.seat-left{
+  left:28px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+/* DERECHA */
+
+.table-player-seat.seat-right{
+  right:28px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+/* Cuando está activo, mantenemos su posición */
+
+.table-player-seat.seat-top.active{
+  transform:translateX(-50%);
+}
+
+.table-player-seat.seat-bottom.active{
+  transform:translateX(-50%);
+}
+
+.table-player-seat.seat-left.active{
+  transform:translateY(-50%);
+}
+
+.table-player-seat.seat-right.active{
+  transform:translateY(-50%);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media(max-width:900px){
+
+  .table-player-seat{
+    width:145px;
+    min-height:65px;
+    padding:8px 10px;
+  }
+
+  .table-player-seat.seat-left,
+  .table-player-seat.seat-right{
+    display:none;
+  }
+
+  .table-player-seat.seat-top{
+    top:20px;
+  }
+
+  .table-player-seat.seat-bottom{
+    bottom:20px;
+  }
+}
+
+@media(max-width:600px){
+
+  .table-player-seat{
+    width:125px;
+    min-height:55px;
+    padding:6px 7px;
+  }
+
+  .table-player-seat .seat-name{
+    font-size:12px;
+  }
+
+  .table-player-seat .seat-info{
+    font-size:9px;
+  }
+
+  .table-player-seat.seat-top{
+    top:16px;
+  }
+
+  .table-player-seat.seat-bottom{
+    bottom:16px;
+  }
+}
+
 </style>
 </head>
 <body><div class="wrap">
@@ -318,7 +869,32 @@ small{color:var(--muted)}
 <hr><label>Código de sala</label><input id="roomCode" placeholder="ABC123" maxlength="6">
 <div class="actions"><button onclick="joinRoom()">Entrar a sala</button></div><div id="menuMsg" class="status"></div></div>
 <div id="lobby" class="panel hidden"><div class="top"><div><div class="title">Sala <span id="lobbyCode"></span></div><div id="lobbyStatus" class="status"></div></div><button onclick="abandon()">Salir</button></div><div id="lobbyCount" class="lobbyCount">Jugadores en sala: 0/4</div><div id="lobbyPlayers" class="section"></div><div id="startControls" class="actions"></div></div>
-<div id="game" class="hidden"><div class="top panel"><div><div class="title">GOLPEADO</div><div id="turnStatus" class="status"></div></div><button onclick="abandon()">Abandonar</button></div><div class="grid section"><aside class="panel"><h3>Jugadores</h3><div id="players" class="players"></div></aside><main class="board panel"><div id="turnBanner" class="turn-banner"><span class="turn-label">TURNO ACTUAL</span><div id="turnName" class="turn-name">Turno de —</div><div id="turnSub" class="turn-sub"></div></div><div class="top board-head"><div class="meta"><b>Mazo</b> <span id="deckCount"></span></div><div class="meta"><b>Último descarte</b></div></div><div id="discard" class="discard-slot"></div><div id="tableGroups" class="table-groups"></div><div id="message" class="status section"></div><div id="actions" class="actions"></div><div class="hand-title-wrap"><h3 class="hand-title">Tu mano</h3><button id="sortBtn" onclick="toggleAutoSort()">↕ Ordenar</button></div><div id="hand" class="hand"></div></main><aside class="panel chatPanel"><div class="top"><h3 style="margin:0">Chat</h3><span id="chatCount" class="stats"></span></div><div id="chat" class="chatBox"></div><div class="chatInput"><input id="chatInput" maxlength="300" placeholder="Escribe un mensaje..."><button onclick="sendChat()">Enviar</button></div><div id="revenge" class="section"></div></aside></div></div>
+<div id="game" class="hidden"><div class="top panel"><div><div class="title">GOLPEADO</div><div id="turnStatus" class="status"></div></div><button onclick="abandon()">Abandonar</button></div><div class="grid section"><aside class="panel"><h3>Jugadores</h3><div id="players" class="players"></div></aside><main class="board panel"><div id="turnBanner" class="turn-banner"><span class="turn-label">TURNO ACTUAL</span><div id="turnName" class="turn-name">Turno de —</div><div id="turnSub" class="turn-sub"></div></div><div class="top board-head"><div class="meta"><b>Mazo</b> <span id="deckCount"></span></div><div class="meta"><b>Último descarte</b></div></div><div class="poker-table">
+  <div class="table-felt">
+
+    <div id="tablePlayers" class="table-players"></div>
+
+    <div class="table-center">
+      <div class="table-pile">
+        <div class="pile-label">MAZO</div>
+        <div class="deck-visual">
+          <div class="deck-card"></div>
+          <div class="deck-card"></div>
+          <div class="deck-card top-card"></div>
+        </div>
+        <div class="pile-count" id="deckCount"></div>
+      </div>
+
+      <div class="table-pile">
+        <div class="pile-label">DESCARTE</div>
+        <div id="discard" class="discard-slot"></div>
+      </div>
+    </div>
+
+    <div id="tableGroups" class="table-groups"></div>
+
+  </div>
+</div><div id="message" class="status section"></div><div id="actions" class="actions"></div><div class="hand-title-wrap"><h3 class="hand-title">Tu mano</h3><button id="sortBtn" onclick="toggleAutoSort()">↕ Ordenar</button></div><div id="hand" class="hand"></div></main><aside class="panel chatPanel"><div class="top"><h3 style="margin:0">Chat</h3><span id="chatCount" class="stats"></span></div><div id="chat" class="chatBox"></div><div class="chatInput"><input id="chatInput" maxlength="300" placeholder="Escribe un mensaje..."><button onclick="sendChat()">Enviar</button></div><div id="revenge" class="section"></div></aside></div></div>
 </div>
 <script>
 // Precarga de las 52 cartas SVG para evitar el icono de imagen durante la partida.
@@ -404,8 +980,89 @@ function renderLobby(){
     $('startControls').innerHTML=`<small>Jugadores en sala: <b>${ps.length}/4</b>. ${ps.length>=2?'Esperando al anfitrión para iniciar…':'Esperando más jugadores…'}<br>Comparte el código <b>${room}</b>.</small>`;
   }
 }
+
+function renderTablePlayers(ps){
+  const container = $('tablePlayers');
+  if(!container) return;
+
+  const count = ps.length;
+
+  /*
+   * Posiciones disponibles según cantidad de jugadores.
+   *
+   * 1 jugador: abajo
+   * 2 jugadores: arriba / abajo
+   * 3 jugadores: arriba / izquierda / abajo
+   * 4 jugadores: arriba / izquierda / derecha / abajo
+   */
+  let seats;
+
+  if(count <= 1){
+    seats = ['seat-bottom'];
+  }else if(count === 2){
+    seats = ['seat-top','seat-bottom'];
+  }else if(count === 3){
+    seats = ['seat-top','seat-left','seat-bottom'];
+  }else{
+    seats = ['seat-top','seat-left','seat-right','seat-bottom'];
+  }
+
+  /*
+   * Reordenamos para que TÚ quedes siempre abajo.
+   * El resto de jugadores se distribuye alrededor.
+   */
+  const meIndex = ps.findIndex(p => p.id === me);
+
+  let ordered = [];
+
+  if(meIndex >= 0){
+    const mine = ps[meIndex];
+    const others = ps.filter(p => p.id !== me);
+
+    ordered = [...others, mine];
+  }else{
+    ordered = [...ps];
+  }
+
+  /*
+   * El último jugador queda en seat-bottom,
+   * por lo que normalmente serás tú.
+   */
+  const html = ordered.slice(0, seats.length).map((p, index) => {
+    const seat = seats[index];
+    const active =
+      p.id === state.current_player_id &&
+      state.game_state === 'playing';
+
+    const isMe = p.id === me;
+
+    return `
+      <div class="table-player-seat ${seat} ${active ? 'active' : ''}">
+        <div class="seat-name">
+          ${esc(p.name)}
+          ${isMe ? '<span class="seat-you">(TÚ)</span>' : ''}
+        </div>
+
+        <div class="seat-info">
+          ${p.card_count} cartas · ${p.connected ? 'Conectado' : 'Desconectado'}
+        </div>
+
+        ${active ? '<div class="seat-turn">SU TURNO</div>' : ''}
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = html;
+}
+
 function renderGame(){
  const ps=state.players||[];
+ const playerCount=ps.length;
+
+ renderTablePlayers(ps);
+
+ document.body.classList.toggle('players-3',playerCount===3);
+ document.body.classList.toggle('players-4',playerCount===4);
  const activePlayer=ps.find(p=>p.id===state.current_player_id);
  const winnerPlayer=ps.find(p=>p.id===state.winner?.player_id);
  const activeName=activePlayer?.name||'—';
@@ -435,7 +1092,9 @@ function renderGame(){
    </div>`;
  }).join('');
 
- $('tableGroups').innerHTML=ps.filter(p=>p.lowered_group).map(p=>`<div class="lowered-group">
+ const loweredPlayers=ps.filter(p=>p.lowered_group);
+$('tableGroups').className='table-groups groups-'+loweredPlayers.length;
+$('tableGroups').innerHTML=loweredPlayers.map(p=>`<div class="lowered-group">
    <div class="lowered-group-head"><span class="lowered-group-name">${esc(p.name)}</span><span class="lowered-group-badge">Grupo ${p.lowered_group.cards.length}</span></div>
    <div class="group-cards">${p.lowered_group.cards.map(c=>cardHtml(c,true)).join('')}</div>
  </div>`).join('') || '<div class="card-caption">Aún no hay grupos bajados.</div>';
