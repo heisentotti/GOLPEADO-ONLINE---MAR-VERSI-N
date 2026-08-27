@@ -55,20 +55,6 @@ small{color:var(--muted)}
   scrollbar-width:thin;
 }
 
-.hand .card-image-wrap{
-  width:70px;
-  height:100px;
-  flex:0 0 70px;
-  transform:none;
-}
-
-.hand .card-image{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:fill;
-}
-
 .card-image-wrap{
   position:relative;
   width:82px;
@@ -131,20 +117,54 @@ small{color:var(--muted)}
   margin-top:3px;
 }
 
-
+.table-groups{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px;
+  margin:10px 0 8px;
+}
 
 /* Distribución de mesa según cantidad de jugadores */
+.table-groups.groups-1{
+  grid-template-columns:1fr;
+  max-width:520px;
+  margin-left:auto;
+  margin-right:auto;
+}
 
+.table-groups.groups-2{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  max-width:760px;
+  margin-left:auto;
+  margin-right:auto;
+}
 
+.table-groups.groups-3{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  max-width:900px;
+  margin-left:auto;
+  margin-right:auto;
+}
 
+.table-groups.groups-4{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+  max-width:900px;
+  margin-left:auto;
+  margin-right:auto;
+}
 
+.table-groups.groups-3 .group-cards,
+.table-groups.groups-4 .group-cards{
+  justify-content:center;
+}
 
-
-
-
-
-
-
+.table-groups.groups-3 .lowered-group,
+.table-groups.groups-4 .lowered-group{
+  padding:8px 10px;
+}
 
 /* ================================
    MESA DE POKER - GOLPEADO
@@ -200,6 +220,46 @@ small{color:var(--muted)}
 /* ================================
    ZONAS DE LOS 4 JUGADORES
    ================================ */
+
+.table-player-zone{
+  position:absolute;
+  z-index:5;
+  width:190px;
+  min-height:92px;
+  padding:10px 14px;
+  box-sizing:border-box;
+  border-radius:16px;
+  background:rgba(5,24,19,.78);
+  border:2px solid rgba(217,180,90,.55);
+  box-shadow:
+    0 7px 18px rgba(0,0,0,.35),
+    inset 0 0 15px rgba(0,0,0,.22);
+  backdrop-filter:blur(3px);
+}
+
+.table-player-top{
+  top:28px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.table-player-bottom{
+  bottom:28px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.table-player-left{
+  left:28px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.table-player-right{
+  right:28px;
+  top:50%;
+  transform:translateY(-50%);
+}
 
 /* ================================
    CENTRO DE LA MESA
@@ -305,13 +365,40 @@ small{color:var(--muted)}
    GRUPOS BAJADOS
    ================================ */
 
+.table-groups{
+  position:absolute;
+  z-index:8;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:58%;
+  min-height:180px;
+  display:grid;
+  gap:12px;
+  pointer-events:none;
+}
 
+.table-groups .lowered-group{
+  pointer-events:auto;
+  background:rgba(4,25,20,.70);
+  border:1px solid rgba(217,180,90,.38);
+  border-radius:12px;
+  padding:7px;
+  box-shadow:0 6px 15px rgba(0,0,0,.25);
+}
 
+.table-groups .group-cards{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:3px;
+  flex-wrap:wrap;
+}
 
-
-
-
-
+.table-groups .group-cards .card-image-wrap{
+  width:58px;
+  height:82px;
+}
 
 /* ================================
    RESPONSIVE
@@ -328,6 +415,28 @@ small{color:var(--muted)}
     min-height:540px;
     border-width:10px;
   }
+
+  .table-player-zone{
+    width:145px;
+    min-height:70px;
+  }
+
+  .table-player-left,
+  .table-player-right{
+    display:none;
+  }
+
+  .table-player-top{
+    top:20px;
+  }
+
+  .table-player-bottom{
+    bottom:20px;
+  }
+
+  .table-groups{
+    width:70%;
+  }
 }
 
 @media(max-width:600px){
@@ -341,6 +450,11 @@ small{color:var(--muted)}
     border-radius:30px;
   }
 
+  .table-player-zone{
+    width:125px;
+    min-height:58px;
+    padding:6px;
+  }
 
   .table-center{
     gap:10px;
@@ -364,7 +478,74 @@ small{color:var(--muted)}
 }
 
 
+.lowered-group{
+  padding:8px 10px;
+}
 
+@media(max-width:760px){
+  .table-groups.groups-3,
+  .table-groups.groups-4{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+
+  .table-groups.groups-3 .lowered-group,
+  .table-groups.groups-4 .lowered-group{
+    padding:7px 8px;
+  }
+}
+
+.lowered-group{
+  padding:10px 12px;
+  border:1px solid rgba(217,180,90,.28);
+  border-radius:12px;
+  background:rgba(5,24,19,.46);
+  min-width:0;
+}
+
+.lowered-group-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+}
+
+.lowered-group-name{
+  font-weight:850;
+}
+
+.lowered-group-badge{
+  font-size:10px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+.group-cards{
+  display:flex;
+  align-items:flex-end;
+  gap:5px;
+  min-height:76px;
+  overflow-x:auto;
+  padding-bottom:2px;
+}
+
+.group-cards .card-image-wrap{
+  width:48px;
+  height:68px;
+  flex:0 0 48px;
+  cursor:default;
+}
+
+.group-cards .card-image{
+  border-radius:7px;
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,.25));
+}
+
+.group-cards .card-image-wrap:hover{
+  transform:none;
+}
 
 @media(max-width:760px){
   .grid{
@@ -375,10 +556,10 @@ small{color:var(--muted)}
     min-height:0;
   }
 
-  .hand .card-image-wrap{
+  .card-image-wrap{
     width:70px;
     height:100px;
-    flex:0 0 70px;
+    flex-basis:70px;
   }
 
   .hand{
@@ -389,25 +570,99 @@ small{color:var(--muted)}
     font-size:21px;
   }
 
-  .hand-title{
-    margin:0;
+  .table-groups{
+    grid-template-columns:1fr;
+  }
+}
+
+.hand-title{
+  margin:0;
+}
+
+.hand-title-wrap{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:12px;
+}
+
+.player-name{
+  font-size:15px;
+}
+
+.stats{
+  font-size:12px;
+  color:var(--muted);
+}
+
+@media(max-width:1100px){
+  .grid{
+    grid-template-columns:220px minmax(0,1fr);
   }
 
-  .hand-title-wrap{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-top:12px;
+  .chatPanel{
+    grid-column:1/-1;
+  }
+}
+
+@media(max-width:760px){
+  .grid{
+    grid-template-columns:1fr;
   }
 
-  .player-name{
-    font-size:15px;
+  .board{
+    min-height:0;
   }
 
-  .stats{
-    font-size:12px;
-    color:var(--muted);
+  .card-image-wrap{
+    width:70px;
+    height:100px;
   }
+
+  .group-cards .card-image-wrap{
+    width:48px;
+    height:68px;
+  }
+
+  .hand{
+    gap:7px;
+  }
+
+  .turn-name{
+    font-size:21px;
+  }
+}
+
+.chatBox{
+  height:360px;
+  overflow:auto;
+  display:grid;
+  align-content:start;
+  gap:8px;
+  margin:10px 0;
+}
+
+.chatMsg{
+  padding:7px 9px;
+  border:1px solid #28554a;
+  border-radius:8px;
+  background:#15332b;
+}
+
+.chatInput{
+  display:flex;
+  gap:6px;
+}
+
+.chatInput input{
+  min-width:0;
+  margin:0;
+}
+
+.lobbyCount{
+  font-size:14px;
+  font-weight:800;
+  margin:8px 0;
 }
 
 @media(max-width:1050px){
@@ -484,105 +739,6 @@ small{color:var(--muted)}
   font-size:10px;
   font-weight:900;
 }
-
-.table-player-seat .player-group{
-  margin-top:8px;
-  padding-top:7px;
-  border-top:1px solid rgba(217,180,90,.25);
-}
-
-.table-player-seat .player-group .group-cards{
-  display:flex;
-  flex-direction:row;
-  flex-wrap:nowrap;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  min-height:0;
-  width:100%;
-  overflow:hidden;
-}
-
-.table-player-seat .player-group .card-image-wrap{
-  width:34px;
-  height:48px;
-  flex:0 0 34px;
-}
-
-.table-player-seat .player-group .card{
-  width:34px;
-  height:48px;
-  flex:0 0 34px;
-  border-radius:6px;
-}
-
-.table-player-seat .player-group .group-label{
-  margin-bottom:5px;
-  color:#f0cf76;
-  font-size:9px;
-  font-weight:900;
-  letter-spacing:1px;
-  text-transform:uppercase;
-}
-
-
-.table-player-seat .player-group .card-image-wrap{
-  width:42px;
-  height:59px;
-  flex:0 0 auto;
-}
-
-.table-player-seat .player-group .card{
-  width:42px;
-  height:59px;
-}
-
-.table-player-seat .player-group .card-corner{
-  left:3px;
-  top:2px;
-}
-
-.table-player-seat .player-group .card-corner.bottom{
-  right:3px;
-  bottom:2px;
-}
-
-.table-player-seat .player-group .card-rank{
-  font-size:10px;
-}
-
-.table-player-seat .player-group .card-suit-small{
-  font-size:9px;
-  margin-top:0;
-}
-
-.table-player-seat .player-group .card-center{
-  inset:14px 5px 14px;
-}
-
-.table-player-seat .player-group .pips{
-  font-size:9px;
-}
-
-.table-player-seat .player-group .ace-pip{
-  font-size:22px;
-}
-
-.table-player-seat .player-group .face-card .face-frame{
-  width:28px;
-  height:36px;
-  border-radius:5px;
-}
-
-.table-player-seat .player-group .face-card .face-letter{
-  font-size:18px;
-}
-
-.table-player-seat .player-group .face-card .face-suit{
-  font-size:11px;
-  margin-top:1px;
-}
-
 
 .table-player-seat .seat-turn{
   display:inline-block;
@@ -735,7 +891,7 @@ small{color:var(--muted)}
       </div>
     </div>
 
-
+    <div id="tableGroups" class="table-groups"></div>
 
   </div>
 </div><div id="message" class="status section"></div><div id="actions" class="actions"></div><div class="hand-title-wrap"><h3 class="hand-title">Tu mano</h3><button id="sortBtn" onclick="toggleAutoSort()">↕ Ordenar</button></div><div id="hand" class="hand"></div></main><aside class="panel chatPanel"><div class="top"><h3 style="margin:0">Chat</h3><span id="chatCount" class="stats"></span></div><div id="chat" class="chatBox"></div><div class="chatInput"><input id="chatInput" maxlength="300" placeholder="Escribe un mensaje..."><button onclick="sendChat()">Enviar</button></div><div id="revenge" class="section"></div></aside></div></div>
@@ -874,30 +1030,14 @@ function renderTablePlayers(ps){
    */
   const html = ordered.slice(0, seats.length).map((p, index) => {
     const seat = seats[index];
-
     const active =
       p.id === state.current_player_id &&
       state.game_state === 'playing';
 
     const isMe = p.id === me;
 
-    const groupHtml = p.lowered_group
-      ? `
-        <div class="player-group">
-          <div class="group-label">
-            ${isMe ? 'TU GRUPO' : 'GRUPO'}
-          </div>
-
-          <div class="group-cards">
-            ${p.lowered_group.cards.map(c => cardHtml(c, true)).join('')}
-          </div>
-        </div>
-      `
-      : '';
-
     return `
       <div class="table-player-seat ${seat} ${active ? 'active' : ''}">
-
         <div class="seat-name">
           ${esc(p.name)}
           ${isMe ? '<span class="seat-you">(TÚ)</span>' : ''}
@@ -907,10 +1047,7 @@ function renderTablePlayers(ps){
           ${p.card_count} cartas · ${p.connected ? 'Conectado' : 'Desconectado'}
         </div>
 
-        ${groupHtml}
-
         ${active ? '<div class="seat-turn">SU TURNO</div>' : ''}
-
       </div>
     `;
   }).join('');
@@ -954,6 +1091,13 @@ function renderGame(){
      <span class="stats">🏆 ${st.wins} · ❌ ${st.losses}</span>
    </div>`;
  }).join('');
+
+ const loweredPlayers=ps.filter(p=>p.lowered_group);
+$('tableGroups').className='table-groups groups-'+loweredPlayers.length;
+$('tableGroups').innerHTML=loweredPlayers.map(p=>`<div class="lowered-group">
+   <div class="lowered-group-head"><span class="lowered-group-name">${esc(p.name)}</span><span class="lowered-group-badge">Grupo ${p.lowered_group.cards.length}</span></div>
+   <div class="group-cards">${p.lowered_group.cards.map(c=>cardHtml(c,true)).join('')}</div>
+ </div>`).join('') || '<div class="card-caption">Aún no hay grupos bajados.</div>';
 
  const mine=ps.find(p=>p.id===me);
  const hand=autoSort?sortHand(mine?.hand||[]):(mine?.hand||[]);

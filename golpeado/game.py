@@ -75,20 +75,27 @@ class Game:
         if self.state != GameState.WAITING:
             raise InvalidMove("La partida ya fue iniciada")
 
-        # The first player is the player who receives 8 and starts.
+        # El jugador inicial se elige aleatoriamente.
+        # Ese jugador recibe 8 cartas y comienza la partida.
+        import random
+
+        starting_index = random.randrange(len(self.players))
+
         deal = self.deck.draw_many(7 * len(self.players) + 1)
+
         for index, player in enumerate(self.players):
             player.hand.clear()
             player.lowered_group = None
             player.plug = None
             player.hand.extend(deal[index * 7 : index * 7 + 7])
-        self.players[0].hand.append(deal[-1])
+
+        self.players[starting_index].hand.append(deal[-1])
 
         self.state = GameState.PLAYING
-        self.current_index = 0
+        self.current_index = starting_index
         self.turn_number = 1
         self.phase = TurnPhase.ACTION
-        self._turn_card_obtained = False  # first player already has 8 dealt cards
+        self._turn_card_obtained = False  # jugador inicial ya recibió sus 8 cartas
         self._assert_invariants()
 
     def abandon(self, player_id: str) -> None:
