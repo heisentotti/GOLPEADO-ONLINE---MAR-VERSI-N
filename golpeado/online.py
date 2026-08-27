@@ -367,6 +367,10 @@ def create_app(manager: Optional[RoomManager] = None):
     if web_dir.exists():
         app.mount("/web", StaticFiles(directory=str(web_dir), html=True), name="web")
 
+        assets_dir = web_dir / "assets"
+        if assets_dir.exists():
+            app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
+
     @app.get("/")
     async def index():
         from fastapi.responses import FileResponse
