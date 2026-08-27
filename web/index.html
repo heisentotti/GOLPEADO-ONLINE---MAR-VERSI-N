@@ -237,6 +237,48 @@ function cardHtml(c,small){
    <div class="card-corner bottom"><span class="card-rank">${esc(rank)}</span><span class="card-suit-small">${esc(suit)}</span></div>
  </div>`;
 }
+function sortHand(hand){
+  const rankOrder={
+    ACE:1,AS:1,A:1,
+    TWO:2,
+    THREE:3,
+    FOUR:4,
+    FIVE:5,
+    SIX:6,
+    SEVEN:7,
+    EIGHT:8,
+    NINE:9,
+    TEN:10,
+    JACK:11,J:11,
+    QUEEN:12,Q:12,
+    KING:13,K:13
+  };
+
+  const suitOrder={
+    CLUBS:1,C:1,
+    DIAMONDS:2,D:2,
+    HEARTS:3,H:3,
+    SPADES:4,S:4
+  };
+
+  return [...hand].sort((a,b)=>{
+    const ar=rankOrder[String(a.rank||'').toUpperCase()]??99;
+    const br=rankOrder[String(b.rank||'').toUpperCase()]??99;
+
+    if(ar!==br)return ar-br;
+
+    const as=suitOrder[String(a.suit||'').toUpperCase()]??99;
+    const bs=suitOrder[String(b.suit||'').toUpperCase()]??99;
+
+    return as-bs;
+  });
+}
+
+function toggleAutoSort(){
+  autoSort=!autoSort;
+  renderGame();
+}
+
 function toggle(id){if(!state||state.current_player_id!==me)return;selected.has(id)?selected.delete(id):selected.add(id);renderGame()}
 function ids(){return [...selected]}
 function lower(){const a=ids();if(a.length<3||a.length>4)return setStatus('Selecciona 3 o 4 cartas.','error');send('lower_group',{card_ids:a});selected.clear()}
