@@ -117,54 +117,20 @@ small{color:var(--muted)}
   margin-top:3px;
 }
 
-.table-groups{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:12px;
-  margin:10px 0 8px;
-}
+
 
 /* Distribución de mesa según cantidad de jugadores */
-.table-groups.groups-1{
-  grid-template-columns:1fr;
-  max-width:520px;
-  margin-left:auto;
-  margin-right:auto;
-}
 
-.table-groups.groups-2{
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px;
-  max-width:760px;
-  margin-left:auto;
-  margin-right:auto;
-}
 
-.table-groups.groups-3{
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:10px;
-  max-width:900px;
-  margin-left:auto;
-  margin-right:auto;
-}
 
-.table-groups.groups-4{
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:16px;
-  max-width:900px;
-  margin-left:auto;
-  margin-right:auto;
-}
 
-.table-groups.groups-3 .group-cards,
-.table-groups.groups-4 .group-cards{
-  justify-content:center;
-}
 
-.table-groups.groups-3 .lowered-group,
-.table-groups.groups-4 .lowered-group{
-  padding:8px 10px;
-}
+
+
+
+
+
+
 
 /* ================================
    MESA DE POKER - GOLPEADO
@@ -365,40 +331,13 @@ small{color:var(--muted)}
    GRUPOS BAJADOS
    ================================ */
 
-.table-groups{
-  position:absolute;
-  z-index:8;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  width:58%;
-  min-height:180px;
-  display:grid;
-  gap:12px;
-  pointer-events:none;
-}
 
-.table-groups .lowered-group{
-  pointer-events:auto;
-  background:rgba(4,25,20,.70);
-  border:1px solid rgba(217,180,90,.38);
-  border-radius:12px;
-  padding:7px;
-  box-shadow:0 6px 15px rgba(0,0,0,.25);
-}
 
-.table-groups .group-cards{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:3px;
-  flex-wrap:wrap;
-}
 
-.table-groups .group-cards .card-image-wrap{
-  width:58px;
-  height:82px;
-}
+
+
+
+
 
 /* ================================
    RESPONSIVE
@@ -434,10 +373,7 @@ small{color:var(--muted)}
     bottom:20px;
   }
 
-  .table-groups{
-    width:70%;
-  }
-}
+  
 
 @media(max-width:600px){
 
@@ -478,74 +414,26 @@ small{color:var(--muted)}
 }
 
 
-.lowered-group{
-  padding:8px 10px;
-}
+
 
 @media(max-width:760px){
-  .table-groups.groups-3,
-  .table-groups.groups-4{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:8px;
-  }
+  
 
-  .table-groups.groups-3 .lowered-group,
-  .table-groups.groups-4 .lowered-group{
-    padding:7px 8px;
-  }
-}
 
-.lowered-group{
-  padding:10px 12px;
-  border:1px solid rgba(217,180,90,.28);
-  border-radius:12px;
-  background:rgba(5,24,19,.46);
-  min-width:0;
-}
 
-.lowered-group-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-  margin-bottom:8px;
-}
 
-.lowered-group-name{
-  font-weight:850;
-}
 
-.lowered-group-badge{
-  font-size:10px;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.5px;
-}
 
-.group-cards{
-  display:flex;
-  align-items:flex-end;
-  gap:5px;
-  min-height:76px;
-  overflow-x:auto;
-  padding-bottom:2px;
-}
 
-.group-cards .card-image-wrap{
-  width:48px;
-  height:68px;
-  flex:0 0 48px;
-  cursor:default;
-}
 
-.group-cards .card-image{
-  border-radius:7px;
-  filter:drop-shadow(0 3px 5px rgba(0,0,0,.25));
-}
 
-.group-cards .card-image-wrap:hover{
-  transform:none;
-}
+
+
+
+
+
+
+
 
 @media(max-width:760px){
   .grid{
@@ -570,10 +458,7 @@ small{color:var(--muted)}
     font-size:21px;
   }
 
-  .table-groups{
-    grid-template-columns:1fr;
-  }
-}
+  
 
 .hand-title{
   margin:0;
@@ -619,19 +504,7 @@ small{color:var(--muted)}
     height:100px;
   }
 
-  .group-cards .card-image-wrap{
-    width:48px;
-    height:68px;
-  }
-
-  .hand{
-    gap:7px;
-  }
-
-  .turn-name{
-    font-size:21px;
-  }
-}
+  
 
 .chatBox{
   height:360px;
@@ -755,14 +628,7 @@ small{color:var(--muted)}
   text-transform:uppercase;
 }
 
-.table-player-seat .player-group .group-cards{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:3px;
-  flex-wrap:wrap;
-  min-height:0;
-}
+.table-player-seat .player-group 
 
 .table-player-seat .player-group .card-image-wrap{
   width:42px;
