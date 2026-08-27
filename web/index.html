@@ -83,7 +83,11 @@ small{color:var(--muted)}
 
 .card-image-wrap.selected{
   transform:translateY(-10px);
-  filter:drop-shadow(0 0 0 rgba(0,0,0,0));
+  outline:3px solid #e53935;
+  outline-offset:2px;
+  border-radius:11px;
+  filter:drop-shadow(0 0 8px rgba(229,57,53,.75));
+  box-shadow:0 0 0 2px rgba(229,57,53,.35), 0 0 18px rgba(229,57,53,.55);
 }
 
 .card-image-wrap.selected .card-image{
