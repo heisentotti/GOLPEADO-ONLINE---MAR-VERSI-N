@@ -121,6 +121,3 @@ def _assert_no_impossible_state(game: Game) -> None:
     ids = [c.id for c in all_cards]
     if len(ids) != len(set(ids)):
         raise AssertionError("Carta física duplicada en el estado")
-    for player in game.players:
-        if player.plug and player.lowered_group and player.plug.target_group_id == player.lowered_group.id:
-            raise AssertionError("Un jugador no puede enchufar su propio grupo")

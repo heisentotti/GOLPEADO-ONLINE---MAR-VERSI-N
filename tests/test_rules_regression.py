@@ -90,3 +90,135 @@ def test_abandonment_and_recycle():
     assert all(c.id not in [x.id for x in list(g.deck.cards)+g.discard_pile] for c in cards)
     g2=Game(players(),seed=11);cards=list(g2.deck.cards);g2.discard_pile=cards[:10];g2.deck.cards.clear();g2.force_recycle_for_test()
     assert len(g2.deck)==9 and g2.last_discard==cards[9] and cards[9] not in g2.deck.cards
+
+
+# --- Regresión: victoria por enchufe propio ---------------------------------
+def controlled_game(cards):
+    g = Game(players(2), seed=100)
+    p = g.players[0]
+    install(g, p, cards)
+    g.current_index = 0
+    g.phase = TurnPhase.ACTION
+    g.state = GameState.PLAYING
+    return g, p
+
+@pytest.mark.parametrize("group, plug", [
+    ([C(9), C(9,Suit.CLUBS), C(9,Suit.SPADES)], C(9,Suit.DIAMONDS)),
+    ([C(5), C(5,Suit.CLUBS), C(5,Suit.SPADES)], C(5,Suit.DIAMONDS)),
+    ([C(11), C(11,Suit.CLUBS), C(11,Suit.SPADES)], C(11,Suit.DIAMONDS)),
+    ([C(5), C(6), C(7)], C(4)),
+    ([C(5), C(6), C(7)], C(8)),
+    ([C(8), C(9), C(10)], C(7)),
+    ([C(8), C(9), C(10)], C(11)),
+])
+def test_three_group_plus_own_plug_wins_immediately(group, plug):
+    g, p = controlled_game(group + [plug, C(2), C(3)])
+    g.lower_group(p.id, [c.id for c in group])
+    assert g.state == GameState.WON
+    assert g.winner == type(g.winner)(p.id, "group3_plus_own_plug")
+    assert p.plug is not None
+    assert p.plug.owner_id == p.id
+    assert p.plug.target_group_id == p.lowered_group.id
+    assert p.plug.card == plug
+
+
+def test_three_group_without_own_plug_does_not_win():
+    group = [C(5), C(6), C(7)]
+    g, p = controlled_game(group + [C(2), C(3), C(9), C(10)])
+    g.lower_group(p.id, [c.id for c in group])
+    assert g.state == GameState.PLAYING
+    assert p.plug is None
+    assert g.can_win(p.id) is None
+
+
+def test_three_group_with_non_completing_card_does_not_win():
+    group = [C(5), C(6), C(7)]
+    g, p = controlled_game(group + [C(2), C(3), C(9), C(13)])
+    g.lower_group(p.id, [c.id for c in group])
+    assert g.state == GameState.PLAYING
+    assert p.plug is None
+    assert g.can_win(p.id) is None
+
+
+def test_other_players_plug_does_not_create_own_plug_victory():
+    g = Game(players(2), seed=101)
+    g.state = GameState.PLAYING
+    p0, p1 = g.players
+    group = [C(5), C(6), C(7)]
+    install(g, p0, group)
+    install(g, p1, [C(8), C(2), C(3), C(4)])
+    g.current_index = 0
+    g.phase = TurnPhase.ACTION
+    g.lower_group(p0.id, [c.id for c in group])
+    assert p1.plug is not None
+    assert p1.plug.owner_id == p1.id
+    assert p0.plug is None
+    assert g.can_win(p0.id) is None
+
+
+def test_player_cannot_have_two_plugs():
+    group = [C(5), C(6), C(7)]
+    g, p = controlled_game(group + [C(8), C(4), C(2)])
+    g.lower_group(p.id, [c.id for c in group])
+    assert p.plug is not None
+    first = p.plug
+    p.hand.append(C(4))
+    g._refresh_plug_for_player(p)
+    assert p.plug == first
+
+
+def test_existing_four_plus_three_victory_regression():
+    g = Game(players(2), seed=102)
+    g.state = GameState.PLAYING
+    p = g.players[0]
+    four = [C(7,s) for s in Suit]
+    three = [C(9,Suit.CLUBS), C(10,Suit.CLUBS), C(11,Suit.CLUBS)]
+    install(g, p, four + three)
+    g.current_index = 0
+    g.phase = TurnPhase.ACTION
+    g.lower_group(p.id, [c.id for c in four])
+    assert g.state == GameState.WON
+    assert g.winner.reason == "group4_plus_group3"
+
+
+def test_existing_four_plus_four_victory_regression():
+    g = Game(players(2), seed=103)
+    g.state = GameState.PLAYING
+    p = g.players[0]
+    first = [C(7,s) for s in Suit]
+    second = [C(9,s) for s in Suit]
+    install(g, p, first + second)
+    g.current_index = 0
+    g.phase = TurnPhase.ACTION
+    g.lower_group(p.id, [c.id for c in first])
+    assert g.state == GameState.PLAYING
+    assert g.can_win(p.id) == "two_group4_before_discard"
+
+
+def test_existing_three_three_plug_victory_regression():
+    g = Game(players(2), seed=104)
+    g.state = GameState.PLAYING
+    p0, p1 = g.players
+    public = [C(5), C(6), C(7)]
+    p1cards = [C(8), C(9,Suit.SPADES), C(10,Suit.SPADES), C(11,Suit.SPADES),
+               C(2,Suit.CLUBS), C(3,Suit.CLUBS), C(4,Suit.CLUBS)]
+    install(g, p0, public)
+    install(g, p1, p1cards)
+    g.current_index = 0
+    g.phase = TurnPhase.ACTION
+    g.lower_group(p0.id, [c.id for c in public])
+    assert p1.plug is not None
+    g.current_index = 1
+    g.phase = TurnPhase.ACTION
+    g._turn_card_obtained = True
+    g.lower_group(p1.id, [C(9,Suit.SPADES).id, C(10,Suit.SPADES).id, C(11,Suit.SPADES).id])
+    assert g.state == GameState.WON
+    assert g.winner.reason == "group3_plus_group3_plus_plug"
+
+
+def test_own_plug_victory_is_available_through_can_win_after_state_change():
+    group = [C(5), C(6), C(7)]
+    g, p = controlled_game(group + [C(2), C(3), C(4), C(8)])
+    p.lowered_group = Group("G1", tuple(group), p.id)
+    p.plug = Plug(C(8), p.id, "G1")
+    assert g.can_win(p.id) == "group3_plus_own_plug"

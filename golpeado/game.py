@@ -286,6 +286,8 @@ class Game:
             return "group4_plus_group3"
         if self._has_two_fours(player):
             return "two_group4_before_discard"
+        if self._has_three_plus_own_plug(player):
+            return "group3_plus_own_plug"
         if self._has_three_three_plug(player):
             return "group3_plus_group3_plus_plug"
         return None
@@ -332,7 +334,7 @@ class Game:
 
         candidates = completing_cards_for_group(group.cards)
         for player in self.players:
-            if player.id == group.owner_id or player.plug is not None:
+            if player.plug is not None:
                 continue
             matching = next((card for card in player.hand if card in candidates), None)
             if matching is not None:
@@ -350,7 +352,7 @@ class Game:
             return
         for other in self.players:
             group = other.lowered_group
-            if group is None or group.size != 3 or other.id == player.id:
+            if group is None or group.size != 3:
                 continue
             candidates = completing_cards_for_group(group.cards)
             matching = next((card for card in player.hand if card in candidates), None)
@@ -399,6 +401,17 @@ class Game:
             return self._has_exact_group(player.hand, 4)
         return self._has_exact_partition(player.hand, 4, 4)
 
+    def _has_three_plus_own_plug(self, player: Player) -> bool:
+        group = player.lowered_group
+        plug = player.plug
+        if group is None or group.size != 3 or plug is None:
+            return False
+        if group.owner_id != player.id or plug.owner_id != player.id:
+            return False
+        if plug.target_group_id != group.id or not player.has_card(plug.card.id):
+            return False
+        return plug.card in completing_cards_for_group(group.cards)
+
     def _has_three_three_plug(self, player: Player) -> bool:
         if player.plug is None:
             return False
@@ -426,6 +439,10 @@ class Game:
             self.state = GameState.WON
             self.phase = None
         elif reason == "group3_plus_group3_plus_plug":
+            self.winner = Victory(player.id, reason)
+            self.state = GameState.WON
+            self.phase = None
+        elif reason == "group3_plus_own_plug":
             self.winner = Victory(player.id, reason)
             self.state = GameState.WON
             self.phase = None
